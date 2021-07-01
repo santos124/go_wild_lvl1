@@ -24,10 +24,10 @@ func maxMin(arr []float32) (float32, float32) {
 	return max, min
 }
 func separator(arr []float32) map[int][]float32 {
-	fmt.Printf("%v\n", arr)
 	m1 := make(map[int][]float32)
 	max, min := maxMin(arr)
-	for i := float32(-100.0); i < max; i = i + 10.0 {
+	min = float32(int(min) - int(min) % 10 - 10)
+	for i := min; i < max; i = i + 10.0 {
 		tempS := []float32 {}
 		if i < 0.0 {
 			for j := range arr {
@@ -60,5 +60,5 @@ func main() {
 	arr := []float32 {-25.4, -27.0, 13.0, 19.0, 15.5, 24.5, -21.0, 32.5, -11.3, -14.0, 5.3, 6.2, -6.6, -7.3}
 	fmt.Printf("прогноз погоды %v\n", arr)
 	m1 := separator(arr)
-	
+	fmt.Println(m1)
 }
