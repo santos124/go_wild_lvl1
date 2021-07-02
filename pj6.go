@@ -7,12 +7,12 @@ import (
 )
 func contextFn() {
 	forever := make(chan struct{})
-    ctx, cancel := context.WithCancel(context.Background())
+    ctx, cancel := context.WithCancel(context.Background()) //ctx канал для получения данных об остановке, при запуске cancel() отправляется сигнал в ctx
 
     go func(ctx context.Context) {
         for {
             select {
-            case <-ctx.Done():  // if cancel() execute
+            case <-ctx.Done():  // остановка
                 forever <- struct{}{}
                 return
             default:
@@ -25,7 +25,7 @@ func contextFn() {
 
     go func() {
         time.Sleep(3 * time.Second)
-        cancel()
+        cancel()											//запуск cancel
     }()
 
     <-forever
@@ -46,9 +46,9 @@ func main() {
 	go func() {
 		for {
 			select {
-			case x := <-chInt:
+			case x := <-chInt:										//стандартная работа горутины
 				fmt.Println(x)
-			case <- stop:
+			case <- stop:											//работа горутины при появлении данных в stopTimer
 				fmt.Println("принтер остановлен")
 				return
 			default:
@@ -59,14 +59,14 @@ func main() {
 
 		for {
 			select {
-			case <-start:
+			case <-start:											//запуск при появлении данных в канале start
 				for {
 					select {
-					case <-stopTimer:
+					case <-stopTimer: 								//работа горутины при появлении данных в stopTimer
 						fmt.Println("таймер остановлен")
-						stop <- true
+						stop <- true 								// отправка в канал stop для остановки принтера
 						return
-					default :
+					default : 										//стандартная работа горутины
 						chInt <- rand.Intn(100500)
 						time.Sleep(time.Duration(rand.Intn(666)) * time.Millisecond)
 					}
@@ -78,12 +78,12 @@ func main() {
 	fmt.Println("нажмите одну/несколько из клавиш с буквами/цифрами и Ентер для старта, для последующей остановки повторить операцию")
 	fmt.Scan(&input)
 	if input != "" {
-		start <- true
+		start <- true												//отправка данных в канал start для начала
 		input = ""
 	}
 	fmt.Scan(&input)
 	if input != "" {
-		stopTimer <- true
+		stopTimer <- true											//отправка данных в канал stop для конца
 		input = ""
 	}
 	time.Sleep(5 * time.Millisecond)

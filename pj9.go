@@ -10,7 +10,7 @@ func Duble(x int) int {
 	return 2 * x
 } 
 func main() {
-	arr := []int{1, 2, 3, 4, 5}
+	arr := []int{1, 2, 3, 4, 5, 6, 7}
 	in := make(chan int)
 	out := make(chan int)
 	//запуск горутины для чтения из массива в канал
