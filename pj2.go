@@ -8,7 +8,9 @@ import (
 func main() {
 	var inArr [5]int = [5]int{2, 4, 6, 8, 10}
 	var outArr [5]int
+	//счетчик горутин
 	wg := new(sync.WaitGroup)
+	//мьютекс для избежания одновременной записи/чтения
 	mu := new(sync.Mutex)
 	for i := range inArr {
 		wg.Add(1)
