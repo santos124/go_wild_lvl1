@@ -28,7 +28,6 @@ func main() {
 	var summ int
 	for i := range outArr {
 		summ = summ + outArr[i]
-
 	}
 	fmt.Println(summ) //теперь можно печатать
 }
